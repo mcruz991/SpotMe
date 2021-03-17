@@ -38,8 +38,11 @@ public class MainActivity extends AppCompatActivity {
     private CardStackAdapter adapter;
 
     private FirebaseAuth fbAuth;
+     String userSex;
+    private String otherSex;
+    private String currentUid;
 
-
+    private DatabaseReference  oUsersDB;
     List<ItemModel> items = new ArrayList<>();
 
     @Override
@@ -49,7 +52,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        final ItemModel itemModel = new ItemModel(); //instantiate card object
+            
+
+        oUsersDB = FirebaseDatabase.getInstance().getReference().child("Users");
+
         fbAuth = FirebaseAuth.getInstance();
+        currentUid = fbAuth.getCurrentUser().getUid();
+
         checkSex();
 
 
@@ -69,7 +79,11 @@ public class MainActivity extends AppCompatActivity {
                 if (direction == Direction.Top){
                     Toast.makeText(MainActivity.this, "Direction Top", Toast.LENGTH_SHORT).show();
                 }
-                if (direction == Direction.Left){
+                if (direction == Direction.Left){ // no remove
+
+                        String userId = itemModel.getUserId();
+                        oUsersDB.child(otherSex).child(userId).child("matches").child(currentUid).setValue(true);
+
                     Toast.makeText(MainActivity.this, "Direction Left", Toast.LENGTH_SHORT).show();
                 }
                 if (direction == Direction.Bottom){
@@ -139,8 +153,7 @@ public class MainActivity extends AppCompatActivity {
         return items;
     }
 
-    private String userSex;
-    private String otherSex;
+
     public void checkSex(){
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -152,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
                     if (snapshot.getKey().equals(user.getUid())){               //know if male and female
                                 userSex = "Male"   ;
                                 otherSex = "Female";
+                        oppSexUsers();
                     }
             }
 
@@ -180,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
         femaleDb.addChildEventListener(new ChildEventListener() {             //CHECK the database, called everytime there are changes
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
                 if (snapshot.getKey().equals(user.getUid())){               //know if male and female
                     userSex = "Female"   ;
                     otherSex = "Male";
@@ -217,8 +232,8 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
 
-                if (snapshot.exists()){
-                    items.add(new ItemModel(R.drawable.monke, snapshot.child("name").getValue().toString()));
+                if (snapshot.exists() && !snapshot.child("connections").child("no").hasChild(currentUid)  && !snapshot.child("connections").child("yes").hasChild(currentUid)){
+                    items.add(new ItemModel(R.drawable.monke, snapshot.child("name").getValue().toString(),snapshot.getKey()));
                     adapter.notifyDataSetChanged();
                 }
             }

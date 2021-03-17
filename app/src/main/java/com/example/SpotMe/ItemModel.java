@@ -3,11 +3,14 @@ package com.example.SpotMe;
     public class ItemModel {
         private int image;
         private String name, age, location;
+        private String userId;
+
 
         public ItemModel() {
         }
 
-        public ItemModel(int image, String name/*String age, String */) {
+        public ItemModel(int image, String name, String userId/*String age, String */) {
+            this.userId = userId;
             this.image = image;
             this.name = name;
           //  this.age = age;
@@ -15,6 +18,11 @@ package com.example.SpotMe;
         }
 
 
+
+
+        public String getUserId(){ return userId;}
+
+        public void setUserId(String userId){this.userId = userId;}
 
         public int getImage() {
             return image;
