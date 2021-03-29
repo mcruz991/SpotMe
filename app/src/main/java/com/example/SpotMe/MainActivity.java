@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private CardStackLayoutManager manager;
     private CardStackAdapter adapter;
 
+
+
     private FirebaseAuth fbAuth;
      String userSex;
     private String otherSex;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
 
@@ -319,5 +322,10 @@ public class MainActivity extends AppCompatActivity {
             fbAuth.signOut();
             Intent intent = new Intent(this, chooseLogin.class);
             startActivity(intent);
+    }
+
+    public void goToSettings(View view) {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
     }
 }
