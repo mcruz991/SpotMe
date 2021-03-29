@@ -21,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
 import com.yuyakaido.android.cardstackview.CardStackView;
@@ -42,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
     private String otherSex;
     private String currentUid;
 
+    private String userId = "2WhpeRmE2HZR5X2R1szTFNazOu22";
+
     private DatabaseReference  oUsersDB;
+
     List<ItemModel> items = new ArrayList<>();
 
     @Override
@@ -52,37 +56,58 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        final ItemModel itemModel = new ItemModel(); //instantiate card object
-            
-
         oUsersDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
         fbAuth = FirebaseAuth.getInstance();
-        currentUid = fbAuth.getCurrentUser().getUid();
+        final FirebaseUser fbUser = fbAuth.getCurrentUser();
+
+        if(fbUser != null){
+
+            currentUid = fbUser.getUid();
+        };
+
+
 
         checkSex();
 
 
+
+
+
         CardStackView cardStackView = findViewById(R.id.card_stack_view);
+
         manager = new CardStackLayoutManager(this, new CardStackListener() {
             @Override
             public void onCardDragging(Direction direction, float ratio) {
                 Log.d(TAG, "onCardDragging: d=" + direction.name() + " ratio=" + ratio);
             }
 
+            ItemModel item = new ItemModel(); //instantiate card object
+
             @Override
             public void onCardSwiped(Direction direction) {
                 Log.d(TAG, "onCardSwiped: p=" + manager.getTopPosition() + " d=" + direction);
                 if (direction == Direction.Right){
+
+
+                    oUsersDB.child(otherSex).child(userId).child("matches").child("yes").child(currentUid).setValue(true);
+
+                    ConnectionMatched(userId);
+
                     Toast.makeText(MainActivity.this, "Direction Right", Toast.LENGTH_SHORT).show();
+
                 }
                 if (direction == Direction.Top){
                     Toast.makeText(MainActivity.this, "Direction Top", Toast.LENGTH_SHORT).show();
                 }
-                if (direction == Direction.Left){ // no remove
+                if (direction == Direction.Left){ //  remove
 
-                        String userId = itemModel.getUserId();
-                        oUsersDB.child(otherSex).child(userId).child("matches").child(currentUid).setValue(true);
+                        String userId = item.getUserId();
+
+                    System.out.println(currentUid);
+                    oUsersDB.child(otherSex).child(userId).child("matches").child("no").child(currentUid).setValue(true);
+
+
 
                     Toast.makeText(MainActivity.this, "Direction Left", Toast.LENGTH_SHORT).show();
                 }
@@ -154,11 +179,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    private void ConnectionMatched(String userId){
+            DatabaseReference curUserConnectionDb = oUsersDB.child(userSex).child(currentUid).child("matches").child("yes").child(userId);
+            curUserConnectionDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        Toast.makeText(MainActivity.this, "new Connection", Toast.LENGTH_LONG).show();
+                        oUsersDB.child(otherSex).child(snapshot.getKey()).child("matches").child("connections").child(currentUid).setValue(true);
+                        oUsersDB.child(userSex).child("matches").child("connections").child(snapshot.getKey()).setValue(true);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+    }
     public void checkSex(){
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         DatabaseReference maleDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Male");
+
         maleDb.addChildEventListener(new ChildEventListener() {             //CHECK the database, called everytime there are changes
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -191,7 +237,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         DatabaseReference femaleDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Female");
+
         femaleDb.addChildEventListener(new ChildEventListener() {             //CHECK the database, called everytime there are changes
+
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
@@ -225,6 +273,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void oppSexUsers(){
+
+
         DatabaseReference oppSexDb = FirebaseDatabase.getInstance().getReference().child("Users").child(otherSex);
 
         oppSexDb.addChildEventListener(new ChildEventListener() {             //CHECK the database, called everytime there are changes
@@ -232,8 +282,13 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
 
-                if (snapshot.exists() && !snapshot.child("connections").child("no").hasChild(currentUid)  && !snapshot.child("connections").child("yes").hasChild(currentUid)){
-                    items.add(new ItemModel(R.drawable.monke, snapshot.child("name").getValue().toString(),snapshot.getKey()));
+                if (snapshot.exists() && !snapshot.child("matches").child("no").hasChild(currentUid)  && !snapshot.child("matches").child("yes").hasChild(currentUid)){
+
+                   // ItemModel item = new ItemModel(R.drawable.monke, snapshot.child("name").getValue().toString(),snapshot.getKey());
+
+                   items.add( new ItemModel(snapshot.getKey(), R.drawable.monke, snapshot.child("name").getValue().toString()));
+
+                    //print the key
                     adapter.notifyDataSetChanged();
                 }
             }

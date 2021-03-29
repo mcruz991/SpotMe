@@ -41,6 +41,7 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
         }
 
         class ViewHolder extends RecyclerView.ViewHolder{
+
             ImageView image;
             TextView name;//age, location;
             ViewHolder(@NonNull View itemView) {
@@ -57,7 +58,7 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
                         .fit()
                         .centerCrop()
                         .into(image);
-                name.setText(data.getNama());
+                name.setText(data.getName());
                // age.setText(data.getUsia());
                // location.setText(data.getKota());
             }
