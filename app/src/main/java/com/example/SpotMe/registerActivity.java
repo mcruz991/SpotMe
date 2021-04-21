@@ -21,6 +21,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class registerActivity extends AppCompatActivity {
 
     private Button regBut;
@@ -79,8 +82,13 @@ public class registerActivity extends AppCompatActivity {
                         }else{
                             String userId = fbAuth.getCurrentUser().getUid();
 
-                            DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId).child("name");
-                            currentUserDB.setValue(name);
+                            DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId);
+                            Map userInfo = new HashMap<>();
+                            userInfo.put("name",name);
+                            userInfo.put("profileImageUrl","default");
+
+
+                            currentUserDB.updateChildren(userInfo);
                         }
 
                     }

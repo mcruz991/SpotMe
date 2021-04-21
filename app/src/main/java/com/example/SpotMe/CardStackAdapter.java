@@ -52,15 +52,26 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
                // location = itemView.findViewById(R.id.item_city);
             }
 
+
             void setData(ItemModel data) {
-                Picasso.get()
-                        .load(data.getImage())
+                /*Picasso.get()
+                        .load(data.pfpImgUrl())
                         .fit()
                         .centerCrop()
-                        .into(image);
+                        .into(image);*/
                 name.setText(data.getName());
                // age.setText(data.getUsia());
                // location.setText(data.getKota());
+
+                switch(data.pfpImgUrl()){
+                    case "default":
+                        Picasso.get().load(R.drawable.defaultimg).into(image);
+
+
+                    default:
+                        Picasso.get().load(data.pfpImgUrl()).into(image);
+                        break;
+                }
             }
         }
 

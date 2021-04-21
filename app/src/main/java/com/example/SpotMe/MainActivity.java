@@ -287,9 +287,13 @@ public class MainActivity extends AppCompatActivity {
 
                 if (snapshot.exists() && !snapshot.child("matches").child("no").hasChild(currentUid)  && !snapshot.child("matches").child("yes").hasChild(currentUid)){
 
+                    String profileImageUrl = "default";
                    // ItemModel item = new ItemModel(R.drawable.monke, snapshot.child("name").getValue().toString(),snapshot.getKey());
+                    if(snapshot.child("profileImageUrl").getValue().toString().equals("default")){
+                        profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+                    }
 
-                   items.add( new ItemModel(snapshot.getKey(), R.drawable.monke, snapshot.child("name").getValue().toString()));
+                   items.add( new ItemModel(snapshot.getKey(),  snapshot.child("name").getValue().toString(),profileImageUrl));
 
                     //print the key
                     adapter.notifyDataSetChanged();

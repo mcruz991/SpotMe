@@ -70,7 +70,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         fbAuth = FirebaseAuth.getInstance();
         userId = fbAuth.getCurrentUser().getUid();
-        pfpDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Profile").child(userId);
+        pfpDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
 
 
         getUserInfo();
@@ -117,7 +117,7 @@ public class ProfileActivity extends AppCompatActivity {
                             profileImageUrl = map.get("profileImageUrl").toString();
                             switch (profileImageUrl) {
                                 case "default":
-                                    Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(pfpImage);
+                                    Glide.with(getApplication()).load(R.drawable.defaultimg).into(pfpImage);
                                     break;
                                 default:
                                     Glide.with(getApplication()).load(profileImageUrl).into(pfpImage);

@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.DiffUtil;
 
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return old.get(oldItemPosition).getImage() == baru.get(newItemPosition).getImage();
+            return old.get(oldItemPosition).pfpImgUrl() == baru.get(newItemPosition).pfpImgUrl();
         }
 
         @Override
