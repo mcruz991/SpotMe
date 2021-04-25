@@ -1,4 +1,4 @@
-package com.example.SpotMe;
+package com.example.SpotMe.Cards;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.SpotMe.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -54,24 +55,24 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
 
 
             void setData(ItemModel data) {
-                /*Picasso.get()
-                        .load(data.pfpImgUrl())
+                Picasso.get()
+                        .load(data.getProfileImgUrl())
                         .fit()
                         .centerCrop()
-                        .into(image);*/
+                        .into(image);
                 name.setText(data.getName());
-               // age.setText(data.getUsia());
-               // location.setText(data.getKota());
+                // age.setText(data.getUsia());
+                // location.setText(data.getKota());
 
-                switch(data.pfpImgUrl()){
+                switch(data.getProfileImgUrl()){
                     case "default":
                         Picasso.get().load(R.drawable.defaultimg).into(image);
 
 
                     default:
-                        Picasso.get().load(data.pfpImgUrl()).into(image);
+                        Picasso.get().load(data.getProfileImgUrl()).into(image);
                         break;
-                }
+               }
             }
         }
 

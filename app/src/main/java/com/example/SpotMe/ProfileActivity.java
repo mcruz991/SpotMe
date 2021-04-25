@@ -44,9 +44,10 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView pfpImage;
 
     private FirebaseAuth fbAuth;
-    private DatabaseReference pfpDb;
+    private DatabaseReference UserpfpDb;
 
-    private String userId, name, phone, profileImageUrl,userSex;
+    private String userId, name, phone, profileImageUrl;
+    private String userSex;
     private Uri resultUri;
 
 
@@ -59,6 +60,8 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+       // String userSex = getIntent().getExtras().getString("userSex");
+
         nameField = findViewById(R.id.name);
         phoneField = findViewById(R.id.phone);
 
@@ -70,7 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         fbAuth = FirebaseAuth.getInstance();
         userId = fbAuth.getCurrentUser().getUid();
-        pfpDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+        UserpfpDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
 
 
         getUserInfo();
@@ -89,12 +92,20 @@ public class ProfileActivity extends AppCompatActivity {
                 saveUserInfo();
             }
         });
+        bBack.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                finish();
+                return;
+            }
+        });
     }
 
 
     private void getUserInfo() {
 
-        pfpDb.addListenerForSingleValueEvent(new ValueEventListener() {
+        UserpfpDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists() && snapshot.getChildrenCount() >0){
@@ -115,10 +126,11 @@ public class ProfileActivity extends AppCompatActivity {
 
                         if(map.get("profileImageUrl")!=null) {
                             profileImageUrl = map.get("profileImageUrl").toString();
+
                             switch (profileImageUrl) {
                                 case "default":
-                                    Glide.with(getApplication()).load(R.drawable.defaultimg).into(pfpImage);
-                                    break;
+                                    Glide.with(getApplication()).load(profileImageUrl).into(pfpImage);
+
                                 default:
                                     Glide.with(getApplication()).load(profileImageUrl).into(pfpImage);
                                     break;
@@ -143,7 +155,7 @@ public class ProfileActivity extends AppCompatActivity {
         Map userInfo = new HashMap();
         userInfo.put("name",name);
         userInfo.put("phone",phone);
-        pfpDb.updateChildren(userInfo);
+        UserpfpDb.updateChildren(userInfo);
         if(resultUri != null){
             final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImage").child(userId);
             Bitmap bitmap = null;
@@ -172,7 +184,7 @@ public class ProfileActivity extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
                             Map newImage = new HashMap();
                             newImage.put("profileImageUrl", uri.toString());
-                            pfpDb.updateChildren(newImage);
+                            UserpfpDb.updateChildren(newImage);
 
                             finish();
                             return;

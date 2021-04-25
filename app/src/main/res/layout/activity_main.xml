@@ -6,11 +6,14 @@
     tools:context=".MainActivity">
 
     <Button
+
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="46dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/white"
+        android:drawableTop="@drawable/ic_setting"
         android:onClick="goToSettings"
-        android:text="Settings"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,7 +28,9 @@
         android:text="Log out"
         app:layout_constraintBottom_toTopOf="@+id/card_stack_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@android:color/white"
+        />
 
     <com.yuyakaido.android.cardstackview.CardStackView
         android:id="@+id/card_stack_view"
@@ -38,5 +43,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/card_stack_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.991"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.417"
+        app:srcCompat="@android:drawable/sym_action_chat"
+        android:background="@android:color/white"
+
+        android:onClick="goToMatches"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

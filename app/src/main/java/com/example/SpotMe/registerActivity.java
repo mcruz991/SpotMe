@@ -82,13 +82,16 @@ public class registerActivity extends AppCompatActivity {
                         }else{
                             String userId = fbAuth.getCurrentUser().getUid();
 
-                            DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId);
+                            DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+
                             Map userInfo = new HashMap<>();
                             userInfo.put("name",name);
+                            userInfo.put("sex", radioButton.getText().toString());
                             userInfo.put("profileImageUrl","default");
 
 
                             currentUserDB.updateChildren(userInfo);
+
                         }
 
                     }

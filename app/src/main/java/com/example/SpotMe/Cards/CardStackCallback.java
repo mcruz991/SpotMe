@@ -1,9 +1,9 @@
-package com.example.SpotMe;
+package com.example.SpotMe.Cards;
 import java.util.List;
 
 import androidx.recyclerview.widget.DiffUtil;
 
-    public class CardStackCallback extends DiffUtil.Callback {
+public class CardStackCallback extends DiffUtil.Callback {
 
         private List<ItemModel> old, baru;
 
@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.DiffUtil;
 
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return old.get(oldItemPosition).pfpImgUrl() == baru.get(newItemPosition).pfpImgUrl();
+            return old.get(oldItemPosition).getProfileImgUrl() == baru.get(newItemPosition).getProfileImgUrl();/*pfpImgUrl() == baru.get(newItemPosition).pfpImgUrl()*/
         }
 
         @Override

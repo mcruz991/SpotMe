@@ -1,20 +1,20 @@
-package com.example.SpotMe;
+package com.example.SpotMe.Cards;
 
     public class ItemModel {
-      //  private  int image;
+       // private  int image;
         private  String name; //age, location;
         private String userId;
-        private String pfpImgUrl;
+        private String profileImgUrl;
 
-        ItemModel(){
+        public ItemModel(){
 
         }
 
-        public ItemModel(String userId, String name, String pfpImgUrl) {
+        public ItemModel(String userId,  /*int image*/ String name,String profileImgUrl) {
             this.userId = userId;
             //this.image = image;
             this.name = name;
-            this.pfpImgUrl = pfpImgUrl;
+            this.profileImgUrl = profileImgUrl;
 
 
         }
@@ -27,7 +27,9 @@ package com.example.SpotMe;
             this.userId = userId;
         }
 
-       /* public int getImage() {
+
+
+        /*public int getImage() {
             return image;
         }*/
 
@@ -35,8 +37,8 @@ package com.example.SpotMe;
             return name;
         }
 
-        public String pfpImgUrl() {
-            return pfpImgUrl;
+        public String getProfileImgUrl() {
+            return profileImgUrl;
         }
 
 
