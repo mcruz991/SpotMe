@@ -55,7 +55,7 @@ public class MatchActivity extends AppCompatActivity {
     }
 
     private void getUserMatchID() {
-        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(curUserId).child("connections").child("matches");
+        DatabaseReference matchDb = FirebaseDatabase.getInstance().getReference().child("Users").child(curUserId).child("matches").child("connections");
         matchDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

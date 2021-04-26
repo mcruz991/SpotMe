@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private String otherSex;
     private String currentUid;
 
-    private String userId = "1ChygSENFRVMSbRsGtGzpYlPSkg1";
+    private String userId = "aeKhQvyftha0vCvuLS6Z5fo0aJc2";
 
     private DatabaseReference  oUsersDB;
 
@@ -196,8 +196,15 @@ public class MainActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
                         Toast.makeText(MainActivity.this, "new Connection", Toast.LENGTH_LONG).show();
-                        oUsersDB.child(snapshot.getKey()).child("matches").child("connections").child(currentUid).setValue(true);
-                        oUsersDB.child(currentUid).child("matches").child("connections").child(snapshot.getKey()).setValue(true);
+
+                        String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
+
+                        oUsersDB.child(snapshot.getKey()).child("matches").child("connections").child(currentUid).child("ChatId").setValue(key);
+
+                        oUsersDB.child(currentUid).child("matches").child("connections").child(snapshot.getKey()).child("ChatId").setValue(key);
+
+
+
                     }
                 }
 
