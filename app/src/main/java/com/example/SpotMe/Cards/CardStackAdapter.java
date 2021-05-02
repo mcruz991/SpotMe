@@ -44,12 +44,12 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
         class ViewHolder extends RecyclerView.ViewHolder{
 
             ImageView image;
-            TextView name;//age, location;
+            TextView name,age; // location;
             ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 image = itemView.findViewById(R.id.item_image);
                 name = itemView.findViewById(R.id.item_name);
-               // age = itemView.findViewById(R.id.item_age);
+                age = itemView.findViewById(R.id.item_age);
                // location = itemView.findViewById(R.id.item_city);
             }
 
@@ -61,7 +61,7 @@ public class CardStackAdapter extends RecyclerView.Adapter<CardStackAdapter.View
                         .centerCrop()
                         .into(image);
                 name.setText(data.getName());
-                // age.setText(data.getUsia());
+                age.setText(data.getAge());
                 // location.setText(data.getKota());
 
                 switch(data.getProfileImgUrl()){

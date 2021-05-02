@@ -10,4 +10,22 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_register">registerActivity</string>
+
+    <string-array name="age">
+
+
+        <item> 18</item>
+        <item> 19</item>
+        <item> 20</item>
+        <item> 21</item>
+        <item> 22</item>
+        <item> 23</item>
+        <item> 24</item>
+        <item> 25</item>
+        <item> 26</item>
+        <item> 27</item>
+        <item> 28</item>
+
+
+    </string-array>
 </resources>

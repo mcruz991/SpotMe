@@ -30,6 +30,15 @@
         android:inputType="phone"
         android:text="phone" />
 
+    <EditText
+        android:id="@+id/bioText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="Bio"
+        android:inputType="textMultiLine"
+        />
+
     <Button
         android:id="@+id/confirm"
         android:layout_width="match_parent"

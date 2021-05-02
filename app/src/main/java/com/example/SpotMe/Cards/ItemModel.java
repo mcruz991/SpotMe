@@ -5,14 +5,15 @@ package com.example.SpotMe.Cards;
         private  String name; //age, location;
         private String userId;
         private String profileImgUrl;
-
+        private String age;
         public ItemModel(){
 
         }
 
-        public ItemModel(String userId,  /*int image*/ String name,String profileImgUrl) {
+        public ItemModel(String userId,  String name, String age, String profileImgUrl) {
             this.userId = userId;
-            //this.image = image;
+
+            this.age = age;
             this.name = name;
             this.profileImgUrl = profileImgUrl;
 
@@ -29,9 +30,9 @@ package com.example.SpotMe.Cards;
 
 
 
-        /*public int getImage() {
-            return image;
-        }*/
+        public String getAge() {
+            return age;
+        }
 
         public String getName() {
             return name;

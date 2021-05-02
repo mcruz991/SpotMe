@@ -37,7 +37,7 @@ import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private EditText nameField, phoneField;
+    private EditText nameField, phoneField, bioField;
 
     private Button bConfirm, bBack;
 
@@ -46,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth fbAuth;
     private DatabaseReference UserpfpDb;
 
-    private String userId, name, phone, profileImageUrl;
+    private String userId, name, phone, profileImageUrl,bio;
     private String userSex;
     private Uri resultUri;
 
@@ -64,6 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         nameField = findViewById(R.id.name);
         phoneField = findViewById(R.id.phone);
+        bioField = findViewById(R.id.bioText);
 
         pfpImage = findViewById(R.id.pfpImg);
 
@@ -92,6 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
                 saveUserInfo();
             }
         });
+
         bBack.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -100,6 +102,10 @@ public class ProfileActivity extends AppCompatActivity {
                 return;
             }
         });
+
+
+
+
     }
 
 
@@ -108,18 +114,25 @@ public class ProfileActivity extends AppCompatActivity {
         UserpfpDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists() && snapshot.getChildrenCount() >0){
+                if(snapshot.exists() && snapshot.getChildrenCount() >0){    //check if null
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
                     if(map.get("name") != null){
                         name = map.get("name").toString();
                         nameField.setText(name);
                     }
-                    if(map.get("phone") != null){
+
+
+                    if(map.get("phone") != null) {
                         phone = map.get("phone").toString();
                         phoneField.setText(phone);
-
+                    }
                         if(map.get("sex")!=null){
                             userSex = map.get("sex").toString();
+                        }
+
+                        if(map.get("bio") != null){
+                            bio = map.get("bio").toString();
+                            bioField.setText(bio);
                         }
 
                         Glide.with(getApplication()).clear(pfpImage);
@@ -136,7 +149,7 @@ public class ProfileActivity extends AppCompatActivity {
                                     break;
                             }
                         }
-                    }
+
                 }
             }
 
@@ -150,11 +163,14 @@ public class ProfileActivity extends AppCompatActivity {
     private void saveUserInfo() {
         name = nameField.getText().toString();
         phone = phoneField.getText().toString();
+        bio = bioField.getText().toString();
 
 
         Map userInfo = new HashMap();
         userInfo.put("name",name);
         userInfo.put("phone",phone);
+        userInfo.put("bio",bio);
+
         UserpfpDb.updateChildren(userInfo);
         if(resultUri != null){
             final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImage").child(userId);

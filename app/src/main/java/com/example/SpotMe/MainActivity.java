@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private String otherSex;
     private String currentUid;
 
-    private String userId = "aeKhQvyftha0vCvuLS6Z5fo0aJc2";
+    private String userId = "Tx8ibFr7EHTbfE25u4eH7I3khaJ3";
 
     private DatabaseReference  oUsersDB;
 
@@ -97,8 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (direction == Direction.Left){ //  remove
 
-                        /*String userId = item.getUserId();
-                    System.out.println(currentUid);*/
+
 
                     oUsersDB.child(userId).child("matches").child("no").child(fbUser.getUid()).setValue(true);
 
@@ -267,11 +266,12 @@ public class MainActivity extends AppCompatActivity {
 
                         String profileImageUrl = "default";
                         // ItemModel item = new ItemModel(R.drawable.monke, snapshot.child("name").getValue().toString(),snapshot.getKey());
+
                         if (!snapshot.child("profileImageUrl").getValue().toString().equals("default")) {
                             profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
                         }
 
-                        items.add(new ItemModel(snapshot.getKey(), snapshot.child("name").getValue().toString(), profileImageUrl/*snapshot.child("profileImageUrl").getValue().toString()*/));
+                        items.add(new ItemModel(snapshot.getKey(), snapshot.child("name").getValue().toString(),snapshot.child("age").getValue().toString(), profileImageUrl));
 
                         //print the key
                         adapter.notifyDataSetChanged();
@@ -316,5 +316,11 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, MatchActivity.class);
         startActivity(intent);
+    }
+
+    public void goToBio(View view){
+        Intent intent = new Intent(this, BioActivity.class);
+        startActivity(intent);
+
     }
 }
